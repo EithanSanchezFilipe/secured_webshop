@@ -1,28 +1,28 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-  }
-  
-  .navbar {
+}
+
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #333;
     padding: 10px 20px;
     color: white;
-  }
-  
-  .navbar .logo {
+}
+
+.navbar .logo {
     font-size: 24px;
     font-weight: bold;
-  }
-  
-  .navbar .links {
+}
+
+.navbar .links {
     display: flex;
     gap: 10px;
-  }
-  
-  .navbar .btn {
+}
+
+.navbar a {
     background-color: #444;
     color: white;
     border: none;
@@ -31,9 +31,54 @@ body {
     font-size: 14px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-  }
-  
-  .navbar .btn:hover {
+}
+
+.navbar a {
     background-color: #555;
-  }
-  
+}
+
+.form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 100;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-container button {
+    background-color: #333;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.form-container button:hover {
+    background-color: #444;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 99;
+}
