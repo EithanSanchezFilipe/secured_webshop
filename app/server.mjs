@@ -3,10 +3,15 @@ import { readFileSync } from 'fs';
 import { createServer } from 'https';
 import express from 'express';
 import userRoute from './routes/User';
+import { fileURLToPath } from 'url';
 
 const app = express();
 
-app.use(json());
+app.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = join(__filename, '..');
+
 const certifPath = join(__dirname, '/keys/certificate.crt');
 const privKeyPath = join(__dirname, '/keys/private.key');
 
