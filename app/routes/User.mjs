@@ -1,9 +1,8 @@
 import express from 'express';
-import { get } from '../controllers/UserController';
+import { get, post } from '../controllers/UserController.mjs';
 
-const router = express();
-router.get('/', get);
-router.post('/login');
-module.exports = router;
+const userRouter = express();
+userRouter.get('/', get);
+userRouter.post('/register', post);
 
-export { router };
+export { userRouter };

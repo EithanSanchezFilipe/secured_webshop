@@ -48,10 +48,11 @@ app.get('/login', (req, res) => {
   res.sendFile(join(__dirname, './public', 'login.html'));
 });
 
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  console.log(username);
+app.get('/register', (req, res) => {
+  res.sendFile(join(__dirname, './public', 'register.html'));
 });
+
+app.use('/api/user', userRouter);
 
 // Démarrage du serveur
 server.listen(8080, () => {
