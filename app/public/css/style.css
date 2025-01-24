@@ -47,6 +47,9 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .form-container input {
@@ -57,7 +60,12 @@ body {
     border-radius: 5px;
     font-size: 14px;
 }
-
+.form-container form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20em;
+}
 .form-container button {
     background-color: #333;
     color: white;
