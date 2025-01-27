@@ -25,7 +25,9 @@ async function register(req, res) {
     res.status(201).json({ message: "l'utilisateur à été créé avec succès" });
   } catch (err) {
     console.error('Erreur lors de la création:', err);
-    res.status(500).json({ message: 'Erreur interne' });
+    res
+      .status(500)
+      .json({ message: 'Erreur du serveur. Veuillez réessayer plus tard' });
   }
 }
 
@@ -54,8 +56,9 @@ async function login(req, res) {
     }
     return res.status(200).json({ message: 'Connexion reussie' });
   } catch (e) {
-    console.error('Erreur lors de la connexion:');
-    res.status(500).json({ message: `Erreur interne ${e}` });
+    res
+      .status(500)
+      .json({ message: `Erreur du serveur. Veuillez réessayer plus tard` });
   }
 }
 export { get, register, login };
