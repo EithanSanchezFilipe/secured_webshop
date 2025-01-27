@@ -1,8 +1,8 @@
 import express from 'express';
-import { get, post } from '../controllers/UserController.mjs';
+import { get, register } from '../controllers/UserController.mjs';
 
 const userRouter = express();
 userRouter.get('/', get);
-userRouter.post('/register', post);
+userRouter.post('/register', register);
 
 export { userRouter };

@@ -7,7 +7,7 @@ function get(req, res) {
   console.log('aaa');
 }
 
-async function post(req, res) {
+async function register(req, res) {
   //Destructure l'objet req.body
   const { password, username, email } = req.body;
   try {
@@ -30,4 +30,4 @@ async function post(req, res) {
     console.error('Erreur lors de la création:', err);
   }
 }
-export { get, post };
+export { get, register };
