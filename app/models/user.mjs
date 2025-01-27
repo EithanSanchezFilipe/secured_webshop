@@ -21,10 +21,6 @@ const UserModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      salt: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
       isAdmin: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
