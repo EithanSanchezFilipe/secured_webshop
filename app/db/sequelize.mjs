@@ -2,7 +2,7 @@ import Sequelize, { DataTypes } from 'sequelize';
 import { UserModel } from '../models/user.mjs';
 
 const sequelize = new Sequelize(
-  'db_websecure', // Nom de la DB qui doit exister
+  'websecure', // Nom de la DB qui doit exister
   'root', // Nom de l'utilisateur
   'root', // Mot de passe de l'utilisateur
   {
@@ -17,7 +17,7 @@ const sequelize = new Sequelize(
 const user = UserModel(sequelize, DataTypes);
 
 const initDB = () => {
-  return sequelize.sync().then(() => {
+  return sequelize.sync({ alter: true }).then(() => {
     console.log('la base de données a été syncronisé');
   });
 };
