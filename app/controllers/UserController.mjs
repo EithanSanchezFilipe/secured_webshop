@@ -11,23 +11,24 @@ async function register(req, res) {
   //Destructure l'objet req.body
   const { password, username, email } = req.body;
   try {
-    //génère un sel
-    const salt = await bcrypt.genSalt(10);
-
     //hash le mot de passe avec le sel
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     //ajoute l'utilisateur dans la db
     await user.create({
       username: username,
       email: email,
       hashedPassword: hashedPassword,
-      salt: salt,
     });
 
     console.log('Utilisateur créé avec succès');
+    res.status(201).json({ message: "l'utilisateur à été créé avec succès" });
   } catch (err) {
     console.error('Erreur lors de la création:', err);
+    res.status(500).json({ message: 'Erreur interne' });
   }
 }
-export { get, register };
+
+  }
+}
+export { get, register, login };
