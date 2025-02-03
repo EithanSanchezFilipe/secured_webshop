@@ -31,12 +31,13 @@ const server = createServer(
   },
   app
 );
-
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, './public', 'login.html'));
-});
-app.get('/home', auth, (req, res) => {
-  res.sendFile(join(__dirname, './public', 'index.html'));
+  const token = req.cookies.token;
+  if (!token) {
+    res.sendFile(join(__dirname, './public', 'login.html'));
+  } else {
+    res.sendFile(join(__dirname, './public', 'index.html'));
+  }
 });
 app.get('/register', (req, res) => {
   res.sendFile(join(__dirname, './public', 'register.html'));
