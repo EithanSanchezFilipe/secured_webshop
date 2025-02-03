@@ -15,9 +15,14 @@ document.addEventListener('DOMContentLoaded', function () {
           email: registerForm.email.value,
         }),
       });
+      if (response.ok) {
+        window.location.href = '/index.html';
+        console.log('User registered successfully!');
+      } else {
+        console.log('Registration failed');
+      }
     });
   }
-
   if (loginForm) {
     loginForm.addEventListener('submit', async function (e) {
       e.preventDefault();

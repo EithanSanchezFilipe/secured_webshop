@@ -3,29 +3,43 @@ import bcrypt from 'bcrypt';
 import mysql from 'mysql2';
 import { db } from '../db/mysql.mjs';
 
-function get(req, res) {
-  res.send('User: Sarah Test');
-  console.log('aaa');
-}
+db.connect((err) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log('connexion a la base de données reussie');
+});
 
 async function register(req, res) {
   //Destructure l'objet req.body
   const { password, username, email } = req.body;
+  const query = `INSERT INTO Users (username, email, hashedPassword, created) VALUES(?,?,?,?)`;
   try {
+    //met la date au format qu'accepte mysql
+    const currentDate = new Date().toISOString().slice(0, 19);
     //hash le mot de passe avec le sel
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    //ajoute l'utilisateur dans la db
-    await user.create({
-      username: username,
-      email: email,
-      hashedPassword: hashedPassword,
-    });
+    //execute la requete
+    db.query(
+      query,
+      [username, email, hashedPassword, currentDate],
+      (err, result) => {
+        if (err) {
+          console.log('aaaaaaa');
+          console.log(err);
+          return res
+            .status(500)
+            .json({ message: "L'utilisateur n'a pas pu être créé" });
+        }
 
-    console.log('Utilisateur créé avec succès');
-    res.status(201).json({ message: "l'utilisateur à été créé avec succès" });
+        return res
+          .status(201)
+          .json({ message: "L'utilisateur a été créé avec succès" });
+      }
+    );
   } catch (err) {
-    console.error('Erreur lors de la création:', err);
     res
       .status(500)
       .json({ message: 'Erreur du serveur. Veuillez réessayer plus tard' });
@@ -35,9 +49,12 @@ async function register(req, res) {
 async function login(req, res) {
   //Destructure l'objet req.body
   const { password, username } = req.body;
+  const query = 'SELECT * from Users WHERE username = ?';
   try {
-    const loginUser = await user.findOne({ where: { username } });
-
+    db.query(query, [username], async (err, result) => {
+      console.log(await result);
+    });
+    const loginUser = result;
     //verifie si un utilisateur à été trouvé
     if (!loginUser) {
       return res
@@ -62,4 +79,4 @@ async function login(req, res) {
       .json({ message: `Erreur du serveur. Veuillez réessayer plus tard` });
   }
 }
-export { get, register, login };
+export { register, login };
