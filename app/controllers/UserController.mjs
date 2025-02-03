@@ -1,6 +1,7 @@
 import { emitWarning } from 'process';
-import { user } from '../db/sequelize.mjs';
 import bcrypt from 'bcrypt';
+import mysql from 'mysql2';
+import { db } from '../db/mysql.mjs';
 
 function get(req, res) {
   res.send('User: Sarah Test');

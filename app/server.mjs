@@ -4,7 +4,6 @@ import { createServer } from 'https';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { userRouter } from './routes/User.mjs';
-import { sequelize, initDB } from './db/sequelize.mjs';
 
 const app = express();
 
@@ -21,16 +20,6 @@ const PRIVATE_KEY = readFileSync(privKeyPath, 'utf8');
 
 app.use(express.static(join('./public', 'css')));
 app.use(express.static(join('./public', 'js')));
-
-try {
-  await sequelize.authenticate();
-  console.log('La connexion à la base de données a bien été établie');
-
-  //initialise la db
-  await initDB();
-} catch {
-  console.error('impossible de se connecter à la base de données');
-}
 
 const server = createServer(
   {
