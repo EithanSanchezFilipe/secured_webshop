@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }),
       });
       if (response.ok) {
-        window.location.href = '/';
+        window.location.href = '/home';
         console.log('Utilisateur connécté');
       } else {
         console.log("l'utilisateur n'a pas pu être connécté");

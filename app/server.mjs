@@ -4,6 +4,7 @@ import { createServer } from 'https';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { userRouter } from './routes/User.mjs';
+import { auth } from './auth/auth.mjs';
 
 const app = express();
 
@@ -30,13 +31,11 @@ const server = createServer(
 );
 
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, './public', 'index.html'));
-});
-
-app.get('/login', (req, res) => {
   res.sendFile(join(__dirname, './public', 'login.html'));
 });
-
+app.get('/home', auth, (req, res) => {
+  res.sendFile(join(__dirname, './public', 'index.html'));
+});
 app.get('/register', (req, res) => {
   res.sendFile(join(__dirname, './public', 'register.html'));
 });
