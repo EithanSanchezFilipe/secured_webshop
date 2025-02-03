@@ -27,13 +27,11 @@ async function register(req, res) {
       [username, email, hashedPassword, currentDate],
       (err, result) => {
         if (err) {
-          console.log('aaaaaaa');
-          console.log(err);
           return res
             .status(500)
             .json({ message: "L'utilisateur n'a pas pu être créé" });
         }
-
+        res.sendFile;
         return res
           .status(201)
           .json({ message: "L'utilisateur a été créé avec succès" });
@@ -49,30 +47,32 @@ async function register(req, res) {
 async function login(req, res) {
   //Destructure l'objet req.body
   const { password, username } = req.body;
-  const query = 'SELECT * from Users WHERE username = ?';
+  const hashedPassword = bcrypt.hash(password, 10);
+  const query = 'SELECT hashedPassword from Users WHERE username = ?';
   try {
     db.query(query, [username], async (err, result) => {
-      console.log(await result);
+      if (err) {
+        return res.status(500).json({ message: 'Erreur lors de la connexion' });
+      }
+      //verifie si un utilisateur à été trouvé
+      if (result.length === 0) {
+        return res
+          .status(400)
+          .json({ message: "L'utilisateur indiqué n'existe pas" });
+      }
+      const loginUser = result[0];
+      //compare les mots de passes
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        loginUser.hashedPassword
+      );
+
+      //vérifie que les mots de passe correspondent
+      if (!isPasswordValid) {
+        return res.status(400).json({ message: 'Mot de passe incorrect' });
+      }
+      return res.status(200).json({ message: 'Connexion reussie' });
     });
-    const loginUser = result;
-    //verifie si un utilisateur à été trouvé
-    if (!loginUser) {
-      return res
-        .status(400)
-        .json({ message: "L'utilisateur indiqué n'existe pas" });
-    }
-
-    //compare les mots de passes
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      loginUser.hashedPassword
-    );
-
-    //vérifie que les mots de passe correspondent
-    if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Mot de passe incorrect' });
-    }
-    return res.status(200).json({ message: 'Connexion reussie' });
   } catch (e) {
     res
       .status(500)

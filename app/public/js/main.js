@@ -16,10 +16,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }),
       });
       if (response.ok) {
-        window.location.href = '/index.html';
-        console.log('User registered successfully!');
+        window.location.href = '/';
+        console.log('Utilisateur créé avec succès');
       } else {
-        console.log('Registration failed');
+        console.log("L'utilisateur na pas pu être créé");
       }
     });
   }
@@ -36,6 +36,12 @@ document.addEventListener('DOMContentLoaded', function () {
           password: loginForm.password.value,
         }),
       });
+      if (response.ok) {
+        window.location.href = '/';
+        console.log('Utilisateur connécté');
+      } else {
+        console.log("l'utilisateur n'a pas pu être connécté");
+      }
     });
   }
 });
