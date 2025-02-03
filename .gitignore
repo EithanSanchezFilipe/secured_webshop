@@ -1,3 +1,4 @@
 /app/node_modules/
 /secured_webshop.iml
 /.idea/
+app/.env

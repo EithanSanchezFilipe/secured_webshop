@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }),
       });
       if (response.ok) {
-        window.location.href = '/';
+        window.location.href = '/login';
         console.log('Utilisateur créé avec succès');
       } else {
         console.log("L'utilisateur na pas pu être créé");

@@ -2,7 +2,10 @@ import { emitWarning } from 'process';
 import bcrypt from 'bcrypt';
 import mysql from 'mysql2';
 import { db } from '../db/mysql.mjs';
+import jwt from 'jsonwebtoken';
+import env from 'dotenv';
 
+env.config();
 db.connect((err) => {
   if (err) {
     console.error(err);
@@ -31,7 +34,6 @@ async function register(req, res) {
             .status(500)
             .json({ message: "L'utilisateur n'a pas pu être créé" });
         }
-        res.sendFile;
         return res
           .status(201)
           .json({ message: "L'utilisateur a été créé avec succès" });
@@ -48,7 +50,7 @@ async function login(req, res) {
   //Destructure l'objet req.body
   const { password, username } = req.body;
   const hashedPassword = bcrypt.hash(password, 10);
-  const query = 'SELECT hashedPassword from Users WHERE username = ?';
+  const query = 'SELECT * from Users WHERE username = ?';
   try {
     db.query(query, [username], async (err, result) => {
       if (err) {
@@ -71,7 +73,11 @@ async function login(req, res) {
       if (!isPasswordValid) {
         return res.status(400).json({ message: 'Mot de passe incorrect' });
       }
-      return res.status(200).json({ message: 'Connexion reussie' });
+      const token = jwt.sign(
+        { username: username, isAdmin: false },
+        process.env.PRIVATE_KEY
+      );
+      return res.status(200).json({ message: 'Connexion reussie', token });
     });
   } catch (e) {
     res
