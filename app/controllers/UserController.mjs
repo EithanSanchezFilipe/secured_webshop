@@ -77,7 +77,7 @@ async function login(req, res) {
         return res.status(400).json({ message: 'Mot de passe incorrect' });
       }
       const token = jwt.sign(
-        { username: username, isAdmin: false },
+        { userId: loginUser.id, isAdmin: false },
         process.env.PRIVATE_KEY,
         {
           expiresIn: '1d',
@@ -112,8 +112,9 @@ function logout(req, res) {
     });
   }
 }
-function getInfo(req, res) {
-  const userId = req.user.id;
+async function getInfo(req, res) {
+  const userId = req.user.userId;
+  console.log(userId);
   const query = `SELECT username, email FROM Users WHERE id = ?`;
   try {
     //execute la requete
@@ -125,8 +126,9 @@ function getInfo(req, res) {
         });
       }
       const user = result[0];
-      return res.status(201).json({
-        message: "Les informations de l'utilisateur ont pas pu être récupérés",
+      console.log(user);
+      res.status(200).json({
+        message: "Les informations de l'utilisateur ont pu être récupérés",
         data: user,
       });
     });

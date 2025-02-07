@@ -42,7 +42,9 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
   res.sendFile(join(__dirname, './public', 'register.html'));
 });
-
+app.get('/profile', (req, res) => {
+  res.sendFile(join(__dirname, './public', 'profile.html'));
+});
 app.use('/api/user', userRouter);
 
 // Démarrage du serveur
