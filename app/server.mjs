@@ -21,8 +21,11 @@ const privKeyPath = join(__dirname, '/keys/private.key');
 const CERTIFICAT = readFileSync(certifPath, 'utf8');
 const PRIVATE_KEY = readFileSync(privKeyPath, 'utf8');
 
-app.use(express.static(join('./public', 'css')));
-app.use(express.static(join('./public', 'js')));
+app.use(express.static(join('./views', 'css')));
+app.use(express.static(join('./views', 'js')));
+app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+app.set('views', join(__dirname, 'views'));
 
 const server = createServer(
   {
@@ -34,13 +37,13 @@ const server = createServer(
 app.get('/', (req, res) => {
   const token = req.cookies.token;
   if (!token) {
-    res.sendFile(join(__dirname, './public', 'login.html'));
+    res.render('login');
   } else {
-    res.sendFile(join(__dirname, './public', 'index.html'));
+    res.render('index');
   }
 });
 app.get('/register', (req, res) => {
-  res.sendFile(join(__dirname, './public', 'register.html'));
+  res.render('register');
 });
 
 app.use('/api/user', userRouter);

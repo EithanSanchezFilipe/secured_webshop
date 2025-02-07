@@ -5,22 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page de bienvenue</title>
     <link rel="stylesheet" href="/style.css" />
-    <script src="/profile.js"></script>
+    <script src="/main.js"></script>
   </head>
   <body>
     <nav class="navbar">
       <div class="logo">Mon site</div>
       <div class="links"></div>
-      <form action="" method="post">
-        <button type="button" id="logoutForm">Se déconnecter</button>
+      <form action="/api/user/logout" method="post">
+        <button type="submit" id="logoutForm">Se déconnecter</button>
       </form>
     </nav>
-    <main>
-        <div>
-            <p id="username"></p>
-            <p id="userEmail"></p>
-            <button>Change password</button>
-        </div>
-    </main>
+    <h1>SASDLA</h1>
   </body>
 </html>

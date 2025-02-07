@@ -15,20 +15,13 @@
     <div class="overlay" id="overlay"></div>
 
     <div class="form-container">
-      <h3>Créer un compte</h3>
-      <form method="post" id="registerForm">
+      <h3>Connexion</h3>
+      <form method="post" id="loginForm" action="/api/user/login">
         <input
           type="text"
           id="username"
           name="username"
           placeholder="Nom d'utilisateur"
-          required
-        />
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
           required
         />
         <input
@@ -38,8 +31,8 @@
           placeholder="Mot de passe"
           required
         />
-        <a href="/">Vous possedez déjà un compte? Connectez vous!</a>
-        <button type="submit">Créer un compte</button>
+        <a href="/register">Vous avez déjà un compte? Créez en un!</a>
+        <button type="submit">Se connecter</button>
       </form>
     </div>
   </body>

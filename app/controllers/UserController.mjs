@@ -53,6 +53,7 @@ async function register(req, res) {
 async function login(req, res) {
   //Destructure l'objet req.body
   const { password, username } = req.body;
+  console.log(req.body);
   const query = 'SELECT * from Users WHERE username = ?';
   try {
     db.query(query, [username], async (err, result) => {
@@ -89,7 +90,11 @@ async function login(req, res) {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 24 * 60 * 60 * 1000,
       });
-      return res.status(200).json({ message: 'Connexion reussie', token });
+      res
+        .status(200)
+        .render('index')
+
+        .json({ message: 'Connexion reussie', token });
     });
   } catch (e) {
     res
@@ -105,7 +110,10 @@ function logout(req, res) {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 0,
     });
-    return res.status(200).json({ message: 'Déconnexion réussie' });
+    return res
+      .status(200)
+      .json({ message: 'Déconnexion réussie' })
+      .render('index');
   } else {
     res.status(400).json({
       message: `Vous n'êtes pas connecté. Veuillez vous connecter avant d'effectuer cette operation`,
