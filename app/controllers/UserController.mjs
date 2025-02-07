@@ -17,17 +17,21 @@ db.connect((err) => {
 async function register(req, res) {
   //Destructure l'objet req.body
   const { password, username, email } = req.body;
-  const query = `INSERT INTO Users (username, email, hashedPassword, created) VALUES(?,?,?,?)`;
+  const query = `INSERT INTO Users (username, email, hashedPassword, created, salt) VALUES(?,?,?,?,?)`;
   try {
     //met la date au format qu'accepte mysql
     const currentDate = new Date().toISOString().slice(0, 19);
     //hash le mot de passe avec le sel
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(
+      password + process.env.PEPPER,
+      salt
+    );
 
     //execute la requete
     db.query(
       query,
-      [username, email, hashedPassword, currentDate],
+      [username, email, hashedPassword, currentDate, salt],
       (err, result) => {
         if (err) {
           return res
@@ -49,7 +53,6 @@ async function register(req, res) {
 async function login(req, res) {
   //Destructure l'objet req.body
   const { password, username } = req.body;
-  const hashedPassword = bcrypt.hash(password, 10);
   const query = 'SELECT * from Users WHERE username = ?';
   try {
     db.query(query, [username], async (err, result) => {
@@ -63,14 +66,14 @@ async function login(req, res) {
           .json({ message: "L'utilisateur indiqué n'existe pas" });
       }
       const loginUser = result[0];
-      //compare les mots de passes
-      const isPasswordValid = await bcrypt.compare(
-        password,
-        loginUser.hashedPassword
+      //hash le mot de passe pour pouvoir les comparer
+      const hashedPassword = await bcrypt.hashSync(
+        password + process.env.PEPPER,
+        loginUser.salt
       );
 
       //vérifie que les mots de passe correspondent
-      if (!isPasswordValid) {
+      if (hashedPassword !== loginUser.hashedPassword) {
         return res.status(400).json({ message: 'Mot de passe incorrect' });
       }
       const token = jwt.sign(
