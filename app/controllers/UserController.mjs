@@ -67,7 +67,7 @@ async function login(req, res) {
       }
       const loginUser = result[0];
       //hash le mot de passe pour pouvoir les comparer
-      const hashedPassword = await bcrypt.hashSync(
+      const hashedPassword = bcrypt.hashSync(
         password + process.env.PEPPER,
         loginUser.salt
       );
@@ -112,4 +112,28 @@ function logout(req, res) {
     });
   }
 }
-export { register, login, logout };
+function getInfo(req, res) {
+  const userId = req.user.id;
+  const query = `SELECT username, email FROM Users WHERE id = ?`;
+  try {
+    //execute la requete
+    db.query(query, [userId], (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          message:
+            "Les informations de l'utilisateur n'ont pas pu être récupérés",
+        });
+      }
+      const user = result[0];
+      return res.status(201).json({
+        message: "Les informations de l'utilisateur ont pas pu être récupérés",
+        data: user,
+      });
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Erreur du serveur. Veuillez réessayer plus tard' });
+  }
+}
+export { register, login, logout, getInfo };
