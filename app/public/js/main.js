@@ -1,6 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
   const registerForm = document.getElementById('registerForm');
   const loginForm = document.getElementById('loginForm');
+  const logoutForm = document.getElementById('logoutForm');
+  if (logoutForm) {
+    logoutForm.addEventListener('click', async function (e) {
+      console.log('aaaaaaa');
+      const response = await fetch('/api/user/logout', {
+        method: 'POST',
+      });
+      if (response.ok) {
+        window.location.href = '/';
+        console.log('Utilisateur déconnecté avec succès');
+      } else {
+        console.log("L'utilisateur na pas pu être déconnecté");
+      }
+    });
+  }
   if (registerForm) {
     registerForm.addEventListener('submit', async function (e) {
       e.preventDefault();

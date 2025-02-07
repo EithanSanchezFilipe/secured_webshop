@@ -97,4 +97,19 @@ async function login(req, res) {
       .json({ message: `Erreur du serveur. Veuillez réessayer plus tard` });
   }
 }
-export { register, login };
+function logout(req, res) {
+  if (req.cookies.token) {
+    res.clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 0,
+    });
+    return res.status(200).json({ message: 'Déconnexion réussie' });
+  } else {
+    res.status(400).json({
+      message: `Vous n'êtes pas connecté. Veuillez vous connecter avant d'effectuer cette operation`,
+    });
+  }
+}
+export { register, login, logout };
