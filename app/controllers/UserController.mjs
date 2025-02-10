@@ -34,13 +34,9 @@ async function register(req, res) {
       [username, email, hashedPassword, currentDate, salt],
       (err, result) => {
         if (err) {
-          return res
-            .status(500)
-            .json({ message: "L'utilisateur n'a pas pu être créé" });
+          return res.status(500).redirect('/register');
         }
-        return res
-          .status(201)
-          .json({ message: "L'utilisateur a été créé avec succès" });
+        return res.status(201).redirect('/');
       }
     );
   } catch (err) {
@@ -62,9 +58,7 @@ async function login(req, res) {
       }
       //verifie si un utilisateur à été trouvé
       if (result.length === 0) {
-        return res
-          .status(400)
-          .json({ message: "L'utilisateur indiqué n'existe pas" });
+        return res.status(400).redirect('/');
       }
       const loginUser = result[0];
       //hash le mot de passe pour pouvoir les comparer
@@ -75,7 +69,7 @@ async function login(req, res) {
 
       //vérifie que les mots de passe correspondent
       if (hashedPassword !== loginUser.hashedPassword) {
-        return res.status(400).json({ message: 'Mot de passe incorrect' });
+        return res.status(400).redirect('/');
       }
       const token = jwt.sign(
         { username: username, isAdmin: false },
@@ -90,11 +84,7 @@ async function login(req, res) {
         secure: process.env.NODE_ENV === 'production',
         maxAge: 24 * 60 * 60 * 1000,
       });
-      res
-        .status(200)
-        .render('index')
-
-        .json({ message: 'Connexion reussie', token });
+      res.status(200).redirect('/');
     });
   } catch (e) {
     res
@@ -110,10 +100,7 @@ function logout(req, res) {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 0,
     });
-    return res
-      .status(200)
-      .json({ message: 'Déconnexion réussie' })
-      .render('index');
+    return res.status(200).redirect('/');
   } else {
     res.status(400).json({
       message: `Vous n'êtes pas connecté. Veuillez vous connecter avant d'effectuer cette operation`,
@@ -134,7 +121,7 @@ function getInfo(req, res) {
       }
       const user = result[0];
       return res.status(201).json({
-        message: "Les informations de l'utilisateur ont pas pu être récupérés",
+        message: "Les informations de l'utilisateur ont pu être récupérés",
         data: user,
       });
     });
