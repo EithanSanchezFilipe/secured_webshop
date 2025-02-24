@@ -127,4 +127,30 @@ function getInfo(req, res) {
       .json({ message: 'Erreur du serveur. Veuillez réessayer plus tard' });
   }
 }
+function adminGet(req, res) {
+  const user = req.user;
+  if (!user.isAdmin) {
+    res.redirect('/');
+  }
+  if (!req.body.username) {
+    res.render('adminPage');
+  }
+  const query = `SELECT username, email, created FROM Users WHERE username LIKE ?`;
+  try {
+    //execute la requete
+    db.query(query, [userId], async (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          message:
+            "Les informations de l'utilisateur n'ont pas pu être récupérés",
+        });
+      }
+      res.render('adminPage', { users: result });
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: 'Erreur du serveur. Veuillez réessayer plus tard' });
+  }
+}
 export { register, login, logout, getInfo };
