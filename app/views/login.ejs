@@ -4,19 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page de connexion</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/style.css" />
     <script src="/main.js"></script>
   </head>
   <body>
     <nav class="navbar">
-      <div class="logo">Mon site</div>
+      <a href="/" class="logo">Mon site</a>
     </nav>
-
-    <div class="overlay" id="overlay"></div>
 
     <div class="form-container">
       <h3>Connexion</h3>
-      <form method="post" id="loginForm" action="/api/user/login">
+      <form
+        method="post"
+        id="loginForm"
+        action="/api/user/login"
+        class="auth-form"
+      >
         <input
           type="text"
           id="username"

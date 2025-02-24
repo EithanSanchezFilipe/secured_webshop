@@ -49,7 +49,6 @@ async function register(req, res) {
 async function login(req, res) {
   //Destructure l'objet req.body
   const { password, username } = req.body;
-  console.log(req.body);
   const query = 'SELECT * from Users WHERE username = ?';
   try {
     db.query(query, [username], async (err, result) => {
@@ -72,7 +71,7 @@ async function login(req, res) {
         return res.status(400).redirect('/');
       }
       const token = jwt.sign(
-        { username: username, isAdmin: false },
+        { userId: loginUser.id, username: username, isAdmin: false },
         process.env.PRIVATE_KEY,
         {
           expiresIn: '1d',
@@ -108,22 +107,19 @@ function logout(req, res) {
   }
 }
 function getInfo(req, res) {
-  const userId = req.user.id;
-  const query = `SELECT username, email FROM Users WHERE id = ?`;
+  const userId = req.user.userId;
+  const query = `SELECT username, email, created FROM Users WHERE id = ?`;
   try {
     //execute la requete
-    db.query(query, [userId], (err, result) => {
+    db.query(query, [userId], async (err, result) => {
       if (err) {
         return res.status(500).json({
           message:
             "Les informations de l'utilisateur n'ont pas pu être récupérés",
         });
       }
-      const user = result[0];
-      return res.status(201).json({
-        message: "Les informations de l'utilisateur ont été récupérés",
-        data: user,
-      });
+      const user = await result[0];
+      res.render('profile', { user: user });
     });
   } catch (err) {
     res

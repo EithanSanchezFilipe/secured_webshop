@@ -9,18 +9,30 @@
   </head>
   <body>
     <nav class="navbar">
-      <div class="logo">Mon site</div>
+      <a href="/"><div class="logo">Mon site</div></a>
       <div class="links"></div>
-      <form action="/api/user/" method="get">
-        <button type="button" id="logoutForm">Se déconnecter</button>
+      <form action="/api/user/logout" method="post">
+        <button type="submit" id="logoutForm">Se déconnecter</button>
       </form>
     </nav>
     <main>
-        <div>
-            <p id="username"></p>
-            <p id="userEmail"></p>
-            <button>Change password</button>
+      <div class="form-container">
+        <h1>Informations de l'utilisateur</h1>
+        <div class="user-info">
+          <div class="info-item">
+            <strong>Nom d'utilisateur :</strong>
+            <span id="username"><%= user.username %></span>
+          </div>
+          <div class="info-item">
+            <strong>Email :</strong>
+            <span id="email"><%= user.email %></span>
+          </div>
+          <div class="info-item">
+            <strong>Date de création :</strong>
+            <span id="creation-date"><%= user.created %></span>
+          </div>
         </div>
+      </div>
     </main>
   </body>
 </html>
