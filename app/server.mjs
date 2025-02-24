@@ -34,19 +34,19 @@ const server = createServer(
   },
   app
 );
-app.get('/', (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    res.render('login');
-  } else {
-    res.render('index');
-  }
+app.get('/login', (req, res) => {
+  res.render('login');
 });
 app.get('/register', (req, res) => {
   res.render('register');
 });
-
 app.use('/api/user', userRouter);
+
+app.use(auth);
+
+app.get('/', (req, res) => {
+  res.render('index', { user: req.user });
+});
 
 // Démarrage du serveur
 server.listen(8080, () => {

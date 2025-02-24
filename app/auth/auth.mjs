@@ -6,8 +6,7 @@ const auth = (req, res, next) => {
   //vérifie que l'utilisateur possède un token
   const token = req.cookies.token;
   if (!token) {
-    const message = `Vous n'avez pas fourni de jeton d'authentification. Ajoutez-en un dans l'en-tête de la requête.`;
-    return res.status(401).json({ message });
+    res.redirect('/login');
   } else {
     //déchiffre le token et verifie sa validité
     jwt.verify(token, process.env.PRIVATE_KEY, (error, decodedToken) => {

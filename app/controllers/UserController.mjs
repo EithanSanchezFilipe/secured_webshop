@@ -62,7 +62,7 @@ async function login(req, res) {
       }
       const loginUser = result[0];
       //hash le mot de passe pour pouvoir les comparer
-      const hashedPassword = bcrypt.hashSync(
+      const hashedPassword = await bcrypt.hash(
         password + process.env.PEPPER,
         loginUser.salt
       );
@@ -81,7 +81,7 @@ async function login(req, res) {
       res.cookie('token', token, {
         httpOnly: true,
         sameSite: 'strict',
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
       res.status(200).redirect('/');
@@ -97,7 +97,7 @@ function logout(req, res) {
     res.clearCookie('token', {
       httpOnly: true,
       sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
       maxAge: 0,
     });
     return res.status(200).redirect('/');
@@ -121,7 +121,7 @@ function getInfo(req, res) {
       }
       const user = result[0];
       return res.status(201).json({
-        message: "Les informations de l'utilisateur ont pu être récupérés",
+        message: "Les informations de l'utilisateur ont été récupérés",
         data: user,
       });
     });
