@@ -4,53 +4,41 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-      }
-      table {
-        width: 100%;
-        margin-top: 20px;
-        border-collapse: collapse;
-      }
-      table,
-      th,
-      td {
-        border: 1px solid #ddd;
-      }
-      th,
-      td {
-        padding: 10px;
-        text-align: left;
-      }
-    </style>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
+    <nav class="navbar">
+      <a href="/" class="logo">Mon site</a>
+      <div class="links">
+        <a href="/api/user">Profile</a>
+        <form action="/api/user/logout" method="post">
+          <button type="submit" id="logoutForm">Se déconnecter</button>
+        </form>
+      </div>
+    </nav>
     <h1>Admin Dashboard - Search User</h1>
 
     <h3>Search User</h3>
-    <form action="/" method="GET">
+    <form action="/api/user/admin" method="GET">
       <label for="searchQuery">Search by Username or Email:</label>
       <input
         type="text"
-        id="searchQuery"
-        name="searchQuery"
-        value="<%= searchQuery %>"
+        id="username"
+        name="username"
         placeholder="Enter username or email..."
         required
       />
       <button type="submit">Search</button>
     </form>
 
-    <% if (searchQuery && users.length > 0) { %>
+    <% if (users.length > 0) { %>
     <h3>Search Results</h3>
     <table>
       <tr>
         <th>ID</th>
         <th>Username</th>
         <th>Email</th>
-        <th>Role</th>
+        <th>Admin</th>
       </tr>
 
       <% users.forEach(function(user) { %>
@@ -58,12 +46,10 @@
         <td><%= user.id %></td>
         <td><%= user.username %></td>
         <td><%= user.email %></td>
-        <td><%= user.role %></td>
+        <td><%= user.isAdmin %></td>
       </tr>
       <% }) %>
     </table>
-    <% } else if (searchQuery) { %>
-    <p>No results found for "<%= searchQuery %>".</p>
     <% } %>
   </body>
 </html>

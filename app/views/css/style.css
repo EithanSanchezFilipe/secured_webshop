@@ -135,3 +135,18 @@ h1 {
 .auth-form button {
   width: 100%;
 }
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+table,
+th,
+td {
+  border: 1px solid #ddd;
+}
+th,
+td {
+  padding: 10px;
+  text-align: left;
+}

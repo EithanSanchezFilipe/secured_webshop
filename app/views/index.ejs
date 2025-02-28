@@ -11,6 +11,9 @@
     <nav class="navbar">
       <a href="/" class="logo">Mon site</a>
       <div class="links">
+        <% if (user.isAdmin == true) { %>
+          <a href="/api/user/admin">Page admin</a>
+          <% } %>
         <a href="/api/user">Profile</a>
         <form action="/api/user/logout" method="post">
           <button type="submit" id="logoutForm">Se déconnecter</button>

@@ -10,7 +10,11 @@
   <body>
     <nav class="navbar">
       <a href="/"><div class="logo">Mon site</div></a>
-      <div class="links"></div>
+      <div class="links">
+        <% if (user.isAdmin == true) { %>
+          <a href="/api/user/admin">Page admin</a>
+          <% } %>
+      </div>
       <form action="/api/user/logout" method="post">
         <button type="submit" id="logoutForm">Se déconnecter</button>
       </form>

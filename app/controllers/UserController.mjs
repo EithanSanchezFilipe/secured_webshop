@@ -71,7 +71,11 @@ async function login(req, res) {
         return res.status(400).redirect('/');
       }
       const token = jwt.sign(
-        { userId: loginUser.id, username: username, isAdmin: false },
+        {
+          userId: loginUser.id,
+          username: username,
+          isAdmin: loginUser.isAdmin,
+        },
         process.env.PRIVATE_KEY,
         {
           expiresIn: '1d',
@@ -108,7 +112,7 @@ function logout(req, res) {
 }
 function getInfo(req, res) {
   const userId = req.user.userId;
-  const query = `SELECT username, email, created FROM Users WHERE id = ?`;
+  const query = `SELECT username, email, created, isAdmin FROM Users WHERE id = ?`;
   try {
     //execute la requete
     db.query(query, [userId], async (err, result) => {
@@ -129,28 +133,34 @@ function getInfo(req, res) {
 }
 function adminGet(req, res) {
   const user = req.user;
+  let users = [];
   if (!user.isAdmin) {
-    res.redirect('/');
+    return res.redirect('/');
   }
-  if (!req.body.username) {
-    res.render('adminPage');
+  let query;
+  if (!req.query.username) {
+    query = `SELECT username, email, created, isAdmin, id FROM Users LIMIT 10`;
+  } else {
+    query = `SELECT username, email, created, isAdmin, id FROM Users WHERE username LIKE ?`;
   }
-  const query = `SELECT username, email, created FROM Users WHERE username LIKE ?`;
+
   try {
     //execute la requete
-    db.query(query, [userId], async (err, result) => {
+    db.query(query, [req.query.username], async (err, result) => {
       if (err) {
         return res.status(500).json({
           message:
             "Les informations de l'utilisateur n'ont pas pu être récupérés",
         });
       }
-      res.render('adminPage', { users: result });
+      console.log(result);
+      if (result) res.render('adminPage', { users: result });
     });
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: 'Erreur du serveur. Veuillez réessayer plus tard' });
+    console.error(err);
+    res.status(500).json({
+      message: 'Erreur du serveur. Veuillez réessayer plus tard',
+    });
   }
 }
-export { register, login, logout, getInfo };
+export { register, login, logout, getInfo, adminGet };
