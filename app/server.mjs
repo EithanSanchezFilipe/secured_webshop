@@ -15,8 +15,8 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '..');
 
-const certifPath = join(__dirname, '/keys/certificate.crt');
-const privKeyPath = join(__dirname, '/keys/private.key');
+const certifPath = join(__dirname, '/keys/server.crt');
+const privKeyPath = join(__dirname, '/keys/server.key');
 
 const CERTIFICAT = readFileSync(certifPath, 'utf8');
 const PRIVATE_KEY = readFileSync(privKeyPath, 'utf8');
