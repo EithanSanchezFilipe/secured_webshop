@@ -4,3 +4,6 @@
 app/.env
 app/keys/private.key
 app/keys/certificate.crt
+app/keys/server.crt
+app/keys/server.csr
+app/keys/server.key
