@@ -133,7 +133,6 @@ function getInfo(req, res) {
 }
 function adminGet(req, res) {
   const user = req.user;
-  let users = [];
   if (!user.isAdmin) {
     return res.redirect('/');
   }
@@ -153,7 +152,6 @@ function adminGet(req, res) {
             "Les informations de l'utilisateur n'ont pas pu être récupérés",
         });
       }
-      console.log(result);
       if (result) res.render('adminPage', { users: result });
     });
   } catch (err) {
