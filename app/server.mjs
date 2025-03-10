@@ -1,5 +1,5 @@
-import { join } from 'path';
-import { readFileSync } from 'fs';
+import path from 'path';
+import fs from 'fs';
 import { createServer } from 'https';
 import express from 'express';
 import { fileURLToPath } from 'url';
@@ -12,20 +12,17 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = join(__filename, '..');
+const certifPath = path.join('./keys/server.crt');
+const privKeyPath = path.join('./keys/server.key');
 
-const certifPath = join(__dirname, '/keys/server.crt');
-const privKeyPath = join(__dirname, '/keys/server.key');
+const CERTIFICAT = fs.readFileSync(certifPath, 'utf8');
+const PRIVATE_KEY = fs.readFileSync(privKeyPath, 'utf8');
 
-const CERTIFICAT = readFileSync(certifPath, 'utf8');
-const PRIVATE_KEY = readFileSync(privKeyPath, 'utf8');
-
-app.use(express.static(join('./views', 'css')));
-app.use(express.static(join('./views', 'js')));
+app.use(express.static(path.join('./views', 'css')));
+app.use(express.static(path.join('./views', 'js')));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
-app.set('views', join(__dirname, 'views'));
+app.set('views', './views');
 
 const server = createServer(
   {
