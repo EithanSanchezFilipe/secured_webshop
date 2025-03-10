@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { createServer } from 'https';
+import https from 'https';
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { userRouter } from './routes/User.mjs';
@@ -18,19 +18,13 @@ const privKeyPath = path.join('./keys/server.key');
 const CERTIFICAT = fs.readFileSync(certifPath, 'utf8');
 const PRIVATE_KEY = fs.readFileSync(privKeyPath, 'utf8');
 
+const credentials = { key: PRIVATE_KEY, cert: CERTIFICAT };
 app.use(express.static(path.join('./views', 'css')));
 app.use(express.static(path.join('./views', 'js')));
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-const server = createServer(
-  {
-    key: PRIVATE_KEY,
-    cert: CERTIFICAT,
-  },
-  app
-);
 app.get('/login', (req, res) => {
   res.render('login');
 });
@@ -46,6 +40,6 @@ app.get('/', (req, res) => {
 });
 
 // Démarrage du serveur
-server.listen(443, () => {
+https.createServer(credentials, app).listen(443, () => {
   console.log('Server running on port https://localhost:443');
 });
